@@ -66,24 +66,49 @@ public class ConnectFourGrid {
 	
   public int pickColumn(Boolean isRed)
   {
+    List<Integer> possible = new ArrayList<>();
     for (int i = 0; i < grid[0].length; i++)
     {
-      List<Integer> possible = new ArrayList<>();
-      String colorMatch = isRed ? "yellow" : "red";
-      if (lowestPieceColor(i) == colorMatch && !colFull(i))
+      String colorMatch = isRed ? "red" : "yellow";
+      if (lowestPieceColor(i) != colorMatch && !colFull(i))
       {
         possible.add(i);
       }
-      if (possible.size() > 0) {
-          return possible.get(new Random().nextInt(possible.size()));
-      }
     }
-    return -1;
+    if (possible.size() > 0)
+    {
+      return possible.get(new Random().nextInt(possible.size()));
+    }
+    else
+    {
+      return basicPickColumn();
+    }
   }
+
+    public int basicPickColumn()
+    {
+        List<Integer> possible = new ArrayList<>();
+        for (int i = 0; i < grid[0].length; i++)
+        {
+            if (!colFull(i))
+            {
+                possible.add(i);
+            }
+        }
+        if (possible.size() > 0)
+        {
+            return possible.get(new Random().nextInt(possible.size()));
+        }
+        else
+        {
+            return -1;
+        }
+    }
+
     private String lowestPieceColor(int col) {
-      for(int row = grid.length - 1; row >= 0; row--)
+      for(int row = grid.length - 1; row >= 1; row--)
       {
-        if(grid[row][col] == null)
+        if(grid[row][col] == null && grid[row - 1][col] != null)
           return grid[row - 1][col].isRed() ? "red" : "yellow";
       }
       return "none";
