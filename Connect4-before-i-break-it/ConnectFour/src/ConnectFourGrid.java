@@ -1,5 +1,8 @@
 import java.awt.Graphics;
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import javax.swing.JOptionPane;
 
@@ -61,17 +64,30 @@ public class ConnectFourGrid {
     }
 	}
 	
-  public int pickColumn()
+  public int pickColumn(Boolean isRed)
   {
     for (int i = 0; i < grid[0].length; i++)
     {
-      if (!colFull(i))
+      List<Integer> possible = new ArrayList<>();
+      String colorMatch = isRed ? "yellow" : "red";
+      if (lowestPieceColor(i) == colorMatch && !colFull(i))
       {
-        return i;
+        possible.add(i);
+      }
+      if (possible.size() > 0) {
+          return possible.get(new Random().nextInt(possible.size()));
       }
     }
     return -1;
   }
+    private String lowestPieceColor(int col) {
+      for(int row = grid.length - 1; row >= 0; row--)
+      {
+        if(grid[row][col] == null)
+          return grid[row - 1][col].isRed() ? "red" : "yellow";
+      }
+      return "none";
+    }
 	
 	// prints the board contents in the console and prints who won
 	private void displayStateInConsole() {

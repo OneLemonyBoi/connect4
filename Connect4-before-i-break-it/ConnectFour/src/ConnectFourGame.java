@@ -7,8 +7,8 @@ import java.util.Scanner;
 
 public class ConnectFourGame {
     
-    private ConnectFourGrid grid = new ConnectFourGrid();
-    private JFrame frame = new JFrame("Connect Four");
+    private final ConnectFourGrid grid = new ConnectFourGrid();
+    private final JFrame frame = new JFrame("Connect Four");
     private JPanel panel;
     private int player;
     private boolean computerplay;
@@ -87,29 +87,21 @@ public class ConnectFourGame {
           return;
         }
         player++;
-        if(player % 2 == 0){
-            grid.colClicked(col, true);
-        } else {
-          grid.colClicked(col, false);
-        }
-        if (computerplay == true)
+        grid.colClicked(col, player % 2 == 0);
+        if (computerplay)
         {
           player++;
-          int computercol = grid.pickColumn();
+          int computercol = grid.pickColumn(player % 2 == 0);
           if (computercol != -1)
           {
-            if(player % 2 == 0){
-              grid.colClicked(computercol, true);
-            } else {
-              grid.colClicked(computercol, false);
-            }
+              grid.colClicked(computercol, player % 2 == 0);
           }
         }
         
     }
     /**
      * Who's turn is it?  How many Checkers played?  Who has won the most games?
-     * @param g
+     * @param g Graphics from JPanel
      */
     protected void drawGameInfo(Graphics g) {
       g.setColor(Color.LIGHT_GRAY); 
